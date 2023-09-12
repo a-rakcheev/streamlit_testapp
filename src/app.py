@@ -4,6 +4,10 @@ import pandas as pd
 import plotly.express as px
 import json
 from copy import deepcopy
+from pathlib import Path
+
+# get rootpath
+root = str(Path(__file__).parent.parent)
 
 # load and cache data
 @st.cache_data
@@ -12,7 +16,7 @@ def load_data(path):
     return df 
 
 # data on internet access
-df_inet_raw = load_data(path="../data/share-of-individuals-using-the-internet.csv")
+df_inet_raw = load_data(path = root + "/data/share-of-individuals-using-the-internet.csv")
 df_inet = deepcopy(df_inet_raw)
 
 # lets rename the columns
@@ -28,7 +32,7 @@ year_grp = df_inet.groupby(by=["year"])
 df_gdppc = px.data.gapminder()
 
 # geojson file
-with open("../data/countries.geojson", "r") as readfile:
+with open(root + "/data/countries.geojson", "r") as readfile:
     geojson_countries = json.load(readfile)
 
 
@@ -44,7 +48,7 @@ left_column, right_column = st.columns([1, 1])
 
 # choose a year for the dataset
 years = sorted(pd.unique(df_inet['year']))
-year = left_column.selectbox("Year", years, index=20)
+year = left_column.selectbox("Year (takes some time to reload after changing)", years, index=20)
 
 # plot based on year
 # the additional data only includes some years, so we will need to check if the year ends with a 2 or 7 and is less than or equal to 2007
