@@ -1,6 +1,7 @@
 # import packages
 import streamlit as st
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import json
 from copy import deepcopy
@@ -48,7 +49,12 @@ left_column, right_column = st.columns([1, 1])
 
 # choose a year for the dataset
 years = sorted(pd.unique(df_inet['year']))
-year = left_column.selectbox("Year (takes some time to reload after changing)", years, index=20)
+
+# selectbox
+# year = left_column.selectbox("Year (takes some time to reload after changing)", years, index=20)
+
+# slider
+year = st.slider(label="Year (takes some time to reload after changing)", min_value=np.min(years), max_value=np.max(years), step=1, value=years[20])
 
 # plot based on year
 # the additional data only includes some years, so we will need to check if the year ends with a 2 or 7 and is less than or equal to 2007
@@ -95,7 +101,7 @@ if (year % 10 == 2 or year % 10 == 7) and (year <= 2007):
     fig.update_layout(margin={"r":0,"t":30,"l":0,"b":0}, mapbox_bounds={"west":-168, "east":192, "north":85, "south":-58})
 
     # set title
-    fig.update_layout(title={"text":f"Percentage of Population with Internet Access in each Country in {year}", "font":{"family":"Cambria"}, "xanchor":"center", "x":0.475, "yanchor":"middle", "y":0.98})
+    fig.update_layout(title={"text":f"Percentage of Population with Internet Access in each Country", "font":{"family":"Cambria"}, "xanchor":"left", "x":0., "yanchor":"middle", "y":0.98})
 
     # update hover text style
     fig.update_layout(hoverlabel={"bgcolor":"white", "font_size":12, "font_family":"Cambria"})
@@ -126,7 +132,7 @@ else:
     fig.update_layout(margin={"r":0,"t":30,"l":0,"b":0}, mapbox_bounds={"west":-168, "east":192, "north":85, "south":-58})
 
     # set title
-    fig.update_layout(title={"text":f"Percentage of Population with Internet Access in each Country in {year}", "font":{"family":"Cambria"}, "xanchor":"center", "x":0.475, "yanchor":"middle", "y":0.98})
+    fig.update_layout(title={"text":f"Percentage of Population with Internet Access in each Country", "font":{"family":"Cambria"}, "xanchor":"left", "x":0., "yanchor":"middle", "y":0.98})
 
     # update hover text style
     fig.update_layout(hoverlabel={"bgcolor":"white", "font_size":12, "font_family":"Cambria"})
